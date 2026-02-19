@@ -1,0 +1,97 @@
+==============================================================================
+  APB PWM Controller Verification
+  Engineer: Senior Design Engineer
+==============================================================================
+
+[INFO] Applying Reset...
+VCD info: dumpfile apb_pwm_ctrl.vcd opened for output.
+[INFO] Reset Released
+
+----------------------------------------------------------------------
+TEST 1: APB Register Write/Read Verification
+----------------------------------------------------------------------
+[TIME=175000] APB WRITE: Addr=0x00000000, Data=0x00000001
+[TIME=205000] APB READ: Addr=0x00000000, Data=0x00000001
+[PASS] Test #1: CTRL Register Write/Read (Expected: 0x00000001, Got: 0x00000001)
+[TIME=235000] APB WRITE: Addr=0x00000004, Data=0x00000064
+[TIME=265000] APB READ: Addr=0x00000004, Data=0x00000064
+[PASS] Test #2: PERIOD Register Write/Read (Expected: 0x00000064, Got: 0x00000064)
+[TIME=295000] APB WRITE: Addr=0x00000008, Data=0x00000032
+[TIME=325000] APB READ: Addr=0x00000008, Data=0x00000032
+[PASS] Test #3: DUTY Register Write/Read (Expected: 0x00000032, Got: 0x00000032)
+
+----------------------------------------------------------------------
+TEST 2: PWM Output when Disabled
+----------------------------------------------------------------------
+[TIME=355000] APB WRITE: Addr=0x00000000, Data=0x00000000
+[PASS] Test #4: PWM Output Disabled (Expected: 0x00000000, Got: 0x00000000)
+
+----------------------------------------------------------------------
+TEST 3: PWM Output with 50 percent Duty Cycle
+----------------------------------------------------------------------
+[TIME=485000] APB WRITE: Addr=0x00000004, Data=0x00000064
+[TIME=515000] APB WRITE: Addr=0x00000008, Data=0x00000032
+[TIME=545000] APB WRITE: Addr=0x00000000, Data=0x00000001
+[INFO] PWM Analysis: HIGH cycles=50, LOW cycles=50, Total=100
+[PASS] Test #5: PWM 50 percent Duty Cycle (Expected Duty=50, Got=50)
+
+----------------------------------------------------------------------
+TEST 4: PWM Output with 25 percent Duty Cycle
+----------------------------------------------------------------------
+[TIME=1585000] APB WRITE: Addr=0x00000008, Data=0x00000019
+[INFO] PWM Analysis: HIGH cycles=25, LOW cycles=75, Total=100
+[PASS] Test #6: PWM 25 percent Duty Cycle (Expected Duty=25, Got=25)
+
+----------------------------------------------------------------------
+TEST 5: PWM Output with 75 percent Duty Cycle
+----------------------------------------------------------------------
+[TIME=3575000] APB WRITE: Addr=0x00000008, Data=0x0000004b
+[INFO] PWM Analysis: HIGH cycles=75, LOW cycles=25, Total=100
+[PASS] Test #7: PWM 75 percent Duty Cycle (Expected Duty=75, Got=75)
+
+----------------------------------------------------------------------
+TEST 6: PWM with Different Period (Period=50, Duty=30)
+----------------------------------------------------------------------
+[TIME=5575000] APB WRITE: Addr=0x00000004, Data=0x00000032
+[TIME=5605000] APB WRITE: Addr=0x00000008, Data=0x0000001e
+[INFO] PWM Analysis: HIGH cycles=30, LOW cycles=20, Total=50
+[PASS] Test #8: PWM Period=50, Duty=30 (Expected Duty=30, Got=30)
+
+----------------------------------------------------------------------
+TEST 7: Enable/Disable Toggle Test
+----------------------------------------------------------------------
+[TIME=6575000] APB WRITE: Addr=0x00000000, Data=0x00000000
+[PASS] Test #9: PWM Disabled State (Expected: 0x00000000, Got: 0x00000000)
+[TIME=6655000] APB WRITE: Addr=0x00000000, Data=0x00000001
+[INFO] PWM Re-enabled
+[INFO] PWM Analysis: HIGH cycles=30, LOW cycles=20, Total=50
+[PASS] Test #10: PWM After Re-enable (Expected Duty=30, Got=30)
+
+----------------------------------------------------------------------
+TEST 8: Edge Case - Duty = 0 (Always Low)
+----------------------------------------------------------------------
+[TIME=7685000] APB WRITE: Addr=0x00000008, Data=0x00000000
+[INFO] PWM Analysis: HIGH cycles=0, LOW cycles=50, Total=50
+[PASS] Test #11: PWM Duty=0 (Always Low) (Expected Duty=0, Got=0)
+
+----------------------------------------------------------------------
+TEST 9: Edge Case - Duty = Period (Always High)
+----------------------------------------------------------------------
+[TIME=8685000] APB WRITE: Addr=0x00000008, Data=0x00000032
+[INFO] PWM Analysis: HIGH cycles=50, LOW cycles=0, Total=50
+[PASS] Test #12: PWM Duty=Period (Always High) (Expected Duty=50, Got=50)
+
+==============================================================================
+  VERIFICATION SUMMARY
+==============================================================================
+  Total Tests Run    : 12
+  Tests Passed       : 12
+  Tests Failed       : 0
+------------------------------------------------------------------------------
+  STATUS: *** ALL TESTS PASSED *** 
+  
+  CONGRATULATIONS! The APB PWM Controller IP is fully verified.
+  All APB transactions and PWM waveforms are working correctly.
+==============================================================================
+
+tb_apb_pwm_ctrl.v:378: $finish called at 9755000 (1ps)
